@@ -70,3 +70,75 @@ async def _check_linkedin(self, monitor: AccountMonitor) -> Optional[Dict]:
     # Implementation here
 Logging Configuration
 View logs in monitor.log or console output.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+When scanning for Wi-Fi networks but seeing no results, this typically indicates issues with the network interface or permissions. Here's how to troubleshoot:
+
+Verify interface status:
+
+bash
+Download
+Copy code
+iwconfig
+Make sure your interface is up and not in monitor mode.
+
+Check if the interface supports monitoring:
+
+bash
+Download
+Copy code
+iw phy | grep -i monitor
+If monitor mode isn't supported, you'll need a compatible adapter.
+
+Restart network manager:
+
+bash
+Download
+Copy code
+sudo systemctl restart NetworkManager
+Try putting interface into monitor mode manually:
+
+bash
+Download
+Copy code
+sudo airmon-ng start wlan0
+Verify permissions:
+
+bash
+Download
+Copy code
+sudo setcap cap_net_raw+ep /usr/sbin/airodump-ng
+Check if another process is using the interface:
+
+bash
+Download
+Copy code
+sudo lsof /dev/net/tun
+For persistent issues, try resetting the wireless subsystem:
+
+bash
+Download
+Copy code
+sudo rfkill block wlan && sudo rfkill unblock wlan
+Update drivers:
+
+bash
+Download
+Copy code
+sudo apt-get update && sudo apt-get upgrade
+If these steps don't resolve the issue, try using a different Wi-Fi adapter that's known to work well with monitor mode.
